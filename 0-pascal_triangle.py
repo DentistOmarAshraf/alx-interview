@@ -13,7 +13,7 @@ Should Return List of Lists
 # assume first array will be [[1]]
 def pascal_recursive(arr, n):
     """Recursion fucntion for return lists of list"""
-    if n == 1:
+    if n == 0:
         return arr
     pascal_recursive(arr, n - 1)
 
@@ -35,4 +35,4 @@ def pascal_triangle(n):
     """Main function"""
     if n <= 0:
         return []
-    return pascal_recursive([[1]], n)
+    return pascal_recursive([], n)
