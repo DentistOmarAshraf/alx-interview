@@ -10,7 +10,6 @@ Should Return List of Lists
 """
 
 
-# assume first array will be [[1]]
 def pascal_recursive(arr, n):
     """Recursion fucntion for return lists of list"""
     if n == 0:
