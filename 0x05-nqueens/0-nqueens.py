@@ -2,15 +2,15 @@
 """
 N-Queens problem
 """
-from sys import argv
+import sys
 
 
-if len(argv) != 2:
+if len(sys.argv) != 2:
     print("Usage: nqueens N")
     exit(1)
 
 try:
-    n = int(argv[1])
+    n = int(sys.argv[1])
 except ValueError:
     print("N must be a number")
     exit(1)
