@@ -1,31 +1,23 @@
 #!/usr/bin/node
+
 const request = require('request');
-const util = require('util');
+const actorID = process.argv[2];
+const apiUrl = 'https://swapi-api.alx-tools.com/api/films/';
 
-const requestPromise = util.promisify(request);
-
-const actorId = process.argv[2];
-if (!actorId) {
-  console.log('Usage: ./0-starwars_characters.js <actorID>');
-  process.exit(1);
-}
-/**
- * async function request for api (starwar)
- * @param {string} actor - actor id passed as argv
- */
-async function getCharacter (actor) {
-  try {
-    const response = await requestPromise({ uri: `https://swapi-api.alx-tools.com/api/films/${actor}` });
-    const data = await JSON.parse(response.body);
-
-    for (const url of data.characters) {
-      const response = await requestPromise({ uri: url });
-      const data = await JSON.parse(response.body);
-      console.log(data.name);
-    }
-  } catch (err) {
-    console.error(err);
+request(apiUrl + actorID, (error, response, body) => {
+  if (!error && response.statusCode === 200) {
+    const characters = JSON.parse(body).characters;
+    viewOne(characters);
   }
-}
+});
 
-getCharacter(actorId);
+function viewOne (char, i = 0) {
+  if (i === char.length) { return; }
+  request(char[i], (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      const name = JSON.parse(body).name;
+      console.log(name);
+    }
+    viewOne(char, i + 1);
+  });
+}
