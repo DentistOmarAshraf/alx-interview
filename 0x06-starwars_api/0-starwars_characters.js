@@ -9,6 +9,7 @@ const request = require('request');
 const util = require('util');
 const requestPromise = util.promisify(request);
 
+if (process.argv.length < 3) { process.exit(1); }
 const actorId = process.argv[2];
 /**
  * getCharacter - print list of actor
