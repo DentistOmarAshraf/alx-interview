@@ -2,41 +2,39 @@
 /**
  * Star War API
  */
-/*
-Promisfy request
-*/
+
 const request = require('request');
-const util = require('util');
-const requestPromise = util.promisify(request);
 
 if (process.argv.length < 3) { process.exit(1); }
+
+/* actorId will be passed as argment */
 const actorId = process.argv[2];
-/**
- * getCharacter - print list of actor
- * @param {string} id
- */
-async function getCharacter (id) {
-  const fullPath = `https://swapi-api.alx-tools.com/api/films/${id}`;
-  try {
-    const response = await requestPromise({ uri: fullPath });
-    const data = await JSON.parse(response.body);
-    const characters = data.characters;
-    const listOfNames = [];
-    for (let i = 0; i < characters.length; i++) {
-      try {
-        const response = await requestPromise(characters[i]);
-        const data = await JSON.parse(response.body);
-        listOfNames.push(await data.name);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    for (const actor of listOfNames) {
-      console.log(actor);
-    }
-  } catch (error) {
-    console.error(error);
+const apiFullPath = `https://swapi-api.alx-tools.com/api/films/${actorId}`;
+
+request.get(apiFullPath, (error, respons, body) => {
+  if (!error && respons.statusCode === 200) {
+    const data = JSON.parse(body).characters;
+    viewName(data);
   }
+});
+
+/**
+ * viewName - Recursive function due to
+ * inabillity to async request function
+ * @param {string} actor
+ * @param {number} i
+ * @param {Array} listOfActor
+ */
+function viewName (actor, i = 0, listOfActor = []) {
+  if (i === actor.length) {
+    for (const act of listOfActor) { console.log(act); }
+    return;
+  }
+  request.get(actor[i], (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      const name = JSON.parse(body).name;
+      listOfActor.push(name);
+      viewName(actor, i = i + 1, listOfActor);
+    }
+  });
 }
-/* call getCharacter on argv */
-getCharacter(actorId);
