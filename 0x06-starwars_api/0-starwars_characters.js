@@ -1,23 +1,41 @@
 #!/usr/bin/node
-
+/**
+ * Star War API
+ */
+/*
+Promisfy request
+*/
 const request = require('request');
-const actorID = process.argv[2];
-const apiUrl = 'https://swapi-api.alx-tools.com/api/films/';
+const util = require('util');
+const requestPromise = util.promisify(request);
 
-request(apiUrl + actorID, (error, response, body) => {
-  if (!error && response.statusCode === 200) {
-    const characters = JSON.parse(body).characters;
-    viewOne(characters);
-  }
-});
-
-function viewOne (char, i = 0) {
-  if (i === char.length) { return; }
-  request(char[i], (error, response, body) => {
-    if (!error && response.statusCode === 200) {
-      const name = JSON.parse(body).name;
-      console.log(name);
+const actorId = process.argv[2];
+/**
+ * getCharacter - print list of actor
+ * @param {string} id
+ */
+async function getCharacter (id) {
+  const fullPath = `https://swapi-api.alx-tools.com/api/films/${id}`;
+  try {
+    const response = await requestPromise({ uri: fullPath });
+    const data = await JSON.parse(response.body);
+    const characters = data.characters;
+    const listOfNames = [];
+    for (let i = 0; i < characters.length; i++) {
+      try {
+        const response = await requestPromise(characters[i]);
+        const data = await JSON.parse(response.body);
+        listOfNames.push(await data.name);
+      } catch (error) {
+        console.error(error);
+      }
     }
-    viewOne(char, i + 1);
-  });
+    for (const actor of listOfNames) {
+      console.log(actor);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
+/* call getCharacter on argv */
+getCharacter(actorId);
