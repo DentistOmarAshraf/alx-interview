@@ -21,7 +21,7 @@ request.get(apiFullPath, (error, respons, body) => {
 /**
  * viewName - Recursive function due to
  * inabillity to async request function
- * @param {string} actor
+ * @param {Array} actor
  * @param {number} i
  * @param {Array} listOfActor
  */
