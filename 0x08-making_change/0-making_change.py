@@ -15,10 +15,10 @@ def makeChange(coins, total):
     startMoney = total
 
     for coin in sorted_coins:
-        if startMoney == 0:
-            return coins
-        if startMoney > 0 and startMoney < coin:
-            return -1
         temp_result = startMoney // coin
         coins += temp_result
         startMoney -= temp_result * coin
+    
+    if startMoney > 0:
+        return -1
+    return coins
