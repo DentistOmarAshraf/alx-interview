@@ -18,7 +18,7 @@ def makeChange(coins, total):
         temp_result = startMoney // coin
         coins += temp_result
         startMoney -= temp_result * coin
-    
+
     if startMoney > 0:
         return -1
     return coins
