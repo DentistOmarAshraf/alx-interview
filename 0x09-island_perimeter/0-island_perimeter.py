@@ -23,5 +23,4 @@ def island_perimeter(grid):
                     if grid[x][j] == 0:
                         coordinates.append((x, j))
 
-    print(coordinates)
     return len(coordinates)
