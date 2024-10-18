@@ -67,8 +67,8 @@ def isWinner(x, nums):
                 Ben_turn, Maria_turn = False, True
                 continue
 
-    if Maria_score == Ben_score:
-        return None
     if Maria_score > Ben_score:
         return "Maria"
-    return "Ben"
+    if Ben_score > Maria_score:
+        return "Ben"
+    return None
