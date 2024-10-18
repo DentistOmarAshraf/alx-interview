@@ -12,7 +12,7 @@ def is_prime(num):
         return False
     if num == 2:
         return True
-    for x in range(3, (num // 2) + 1, 2):
+    for x in range(2, (num // 2) + 1):
         if num % x == 0:
             return False
     return True
