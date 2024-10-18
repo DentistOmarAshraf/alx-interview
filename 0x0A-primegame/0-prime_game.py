@@ -21,6 +21,8 @@ def is_prime(num):
 def isWinner(x, nums):
     """isWinner
     """
+    if len(nums) != x:
+        return None
     Maria_score, Ben_score = 0, 0
     for i in range(x):
         Maria_turn, Ben_turn = True, False
